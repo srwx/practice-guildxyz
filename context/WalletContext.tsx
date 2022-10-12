@@ -33,7 +33,9 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
   const connectWallet = async () => {
     if (typeof window !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const provider = new ethers.providers.Web3Provider(
+        (window as any).ethereum
+      )
       await provider.send("eth_requestAccounts", [])
       const signer = provider.getSigner()
 
@@ -43,8 +45,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  if (typeof window !== "undefined")
-    window.ethereum.on("accountsChanged", connectWallet)
+  // if (typeof window !== "undefined")
+  //   window.ethereum.on("accountsChanged", connectWallet)
 
   const onTokenSubmit = async () => {
     const signerFunction = async (signableMessage: string | Bytes) =>

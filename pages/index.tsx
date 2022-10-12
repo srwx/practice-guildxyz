@@ -7,6 +7,7 @@ import { WalletContext } from "../context/WalletContext"
 
 const Home: NextPage = () => {
   const { isSubmit } = useContext(WalletContext)
+
   return (
     <>
       <ConnectWalletButton />
