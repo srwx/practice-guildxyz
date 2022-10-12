@@ -29,7 +29,7 @@ export default async function handler(
       res.status(200).json({ access_token: json.access_token })
     } catch (err) {
       console.log(err)
-      res.status(400).json({ error: true })
+      res.status(400).json({ error: err })
     }
   }
 }
