@@ -32,7 +32,12 @@ export const JoinGuild = () => {
             signableMessage
           )
 
+        console.log("1")
+
         const res = await axios.get(`/api/login?code=${router.query.code}`)
+
+        console.log("2")
+        console.log(res.data.access_token, addr)
 
         onTokenSubmit(res.data.access_token, addr, signerFunction)
       }
