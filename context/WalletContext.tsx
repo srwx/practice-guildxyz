@@ -16,6 +16,8 @@ interface ContextProps {
   connectWallet: () => Promise<void>
   onTokenSubmit: () => Promise<void>
   setTokenInput: Dispatch<SetStateAction<string>>
+  isSuccess: boolean
+  isSubmit: boolean
 }
 
 export const WalletContext = createContext<ContextProps>(null!)
@@ -26,6 +28,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   >()
   const [walletAddress, setWalletAddress] = useState("")
   const [tokenInput, setTokenInput] = useState("")
+  const [isSuccess, setIsSuccrss] = useState(false)
+  const [isSubmit, setIsSubmit] = useState(false)
 
   const connectWallet = async () => {
     if (typeof window !== "undefined") {
@@ -47,6 +51,9 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       await (signer as ethers.providers.JsonRpcSigner).signMessage(
         signableMessage
       )
+
+    console.log("submit", walletAddress)
+
     const res = await user.join(GUILD_ID, walletAddress, signerFunction, [
       {
         name: "DISCORD",
@@ -56,7 +63,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       },
     ])
 
-    console.log("response: ", res)
+    setIsSuccrss(res.success)
+    setIsSubmit(true)
   }
 
   useEffect(() => {
@@ -71,6 +79,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         connectWallet,
         onTokenSubmit,
         setTokenInput,
+        isSuccess,
+        isSubmit,
       }}
     >
       {children}
