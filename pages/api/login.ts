@@ -10,8 +10,8 @@ export default async function handler(
     try {
       console.log("code:", code)
       const data = {
-        client_id: "1028964643995144252",
-        client_secret: "5ZG3oXPOgwF0wl7qaWLMmiEhFynW3E40",
+        client_id: "1029720283076112394",
+        client_secret: "wwZq8AUkID0dgCm2i5693wmQcE1CjWLT",
         grant_type: "authorization_code",
         code,
         redirect_uri: "https://practice-guildxyz.vercel.app/",
