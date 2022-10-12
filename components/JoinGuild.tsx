@@ -11,7 +11,7 @@ export const JoinGuild = () => {
 
   const handleClick = () => {
     window.open(
-      "https://discord.com/api/oauth2/authorize?client_id=1028964643995144252&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code&scope=identify%20guilds.join",
+      "https://discord.com/api/oauth2/authorize?client_id=1029720283076112394&redirect_uri=https%3A%2F%2Fpractice-guildxyz.vercel.app%2F&response_type=code&scope=identify%20guilds.join",
       "_blank",
       "noopener,noreferrer"
     )
