@@ -14,7 +14,7 @@ export default async function handler(
         client_secret: "5ZG3oXPOgwF0wl7qaWLMmiEhFynW3E40",
         grant_type: "authorization_code",
         code,
-        redirect_uri: "http://localhost:3000/api/login",
+        redirect_uri: "https://practice-guildxyz.vercel.app/api/login",
       }
 
       const response = await axios.post(
