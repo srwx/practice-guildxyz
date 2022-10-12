@@ -69,9 +69,9 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     setIsSubmit(true)
   }
 
-  useEffect(() => {
-    connectWallet()
-  }, [walletAddress])
+  // useEffect(() => {
+  //   connectWallet()
+  // }, [walletAddress])
 
   return (
     <WalletContext.Provider
