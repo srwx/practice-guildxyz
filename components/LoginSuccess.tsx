@@ -11,11 +11,11 @@ export const LoginSuccess = () => {
             Login success! You can join discord by click link below
           </h2>
           <a
-            href="https://discord.gg/nzGsYvM8bC"
+            href="https://discord.gg/Cuhwpg3Seg"
             className="text-blue-500 underline"
             target="__blank"
           >
-            https://discord.gg/nzGsYvM8bC
+            https://discord.gg/Cuhwpg3Seg
           </a>
         </div>
       ) : (

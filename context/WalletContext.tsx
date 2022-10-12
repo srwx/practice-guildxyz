@@ -1,11 +1,4 @@
-import {
-  useState,
-  useEffect,
-  createContext,
-  ReactNode,
-  SetStateAction,
-  Dispatch,
-} from "react"
+import { useState, createContext, ReactNode } from "react"
 import { ethers, Bytes } from "ethers"
 import { user } from "@guildxyz/sdk"
 import { GUILD_ID } from "../constants/guild"
@@ -14,8 +7,11 @@ interface ContextProps {
   signer: ethers.providers.JsonRpcSigner | undefined
   walletAddress: string
   connectWallet: () => Promise<void>
-  onTokenSubmit: () => Promise<void>
-  setTokenInput: Dispatch<SetStateAction<string>>
+  onTokenSubmit: (
+    access_token: string,
+    addr: string,
+    signerFunction: (signableMessage: string | Bytes) => Promise<string>
+  ) => Promise<void>
   isSuccess: boolean
   isSubmit: boolean
 }
@@ -27,7 +23,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     ethers.providers.JsonRpcSigner | undefined
   >()
   const [walletAddress, setWalletAddress] = useState("")
-  const [tokenInput, setTokenInput] = useState("")
   const [isSuccess, setIsSuccrss] = useState(false)
   const [isSubmit, setIsSubmit] = useState(false)
 
@@ -40,27 +35,22 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       const signer = provider.getSigner()
 
       const addr = await signer.getAddress()
+
       setSigner(signer)
       setWalletAddress(addr)
     }
   }
 
-  // if (typeof window !== "undefined")
-  //   window.ethereum.on("accountsChanged", connectWallet)
-
-  const onTokenSubmit = async () => {
-    const signerFunction = async (signableMessage: string | Bytes) =>
-      await (signer as ethers.providers.JsonRpcSigner).signMessage(
-        signableMessage
-      )
-
-    console.log("submit", walletAddress)
-
-    const res = await user.join(GUILD_ID, walletAddress, signerFunction, [
+  const onTokenSubmit = async (
+    access_token: string,
+    addr: string,
+    signerFunction: (signableMessage: string | Bytes) => Promise<string>
+  ) => {
+    const res = await user.join(GUILD_ID, addr, signerFunction, [
       {
         name: "DISCORD",
         authData: {
-          access_token: tokenInput,
+          access_token: access_token,
         },
       },
     ])
@@ -69,10 +59,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     setIsSubmit(true)
   }
 
-  // useEffect(() => {
-  //   connectWallet()
-  // }, [walletAddress])
-
   return (
     <WalletContext.Provider
       value={{
@@ -80,7 +66,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         walletAddress,
         connectWallet,
         onTokenSubmit,
-        setTokenInput,
         isSuccess,
         isSubmit,
       }}
