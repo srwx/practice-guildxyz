@@ -7,7 +7,7 @@ import { WalletContext } from "../context/WalletContext"
 
 export const JoinGuild = () => {
   const router = useRouter()
-  const { onTokenSubmit } = useContext(WalletContext)
+  const { onTokenSubmit, isLoading } = useContext(WalletContext)
 
   const handleClick = () => {
     window.open(
@@ -50,14 +50,18 @@ export const JoinGuild = () => {
     <div className="flex flex-col gap-y-4 justify-center items-center py-10">
       {/* Join section */}
       <h2 className="text-xl font-medium">You can join guild here!</h2>
-      <div
-        className={classNames(
-          "bg-orange-500 px-4 py-2 rounded-md mr-5 text-white cursor-pointer mb-16"
-        )}
-        onClick={handleClick}
-      >
-        Join Guild
-      </div>
+      {!isLoading ? (
+        <div
+          className={classNames(
+            "bg-orange-500 px-4 py-2 rounded-md mr-5 text-white cursor-pointer mb-16"
+          )}
+          onClick={handleClick}
+        >
+          Join Guild
+        </div>
+      ) : (
+        <div>Loading... please wait</div>
+      )}
     </div>
   )
 }
