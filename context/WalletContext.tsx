@@ -10,14 +10,16 @@ interface ContextProps {
     signerFunction: (signableMessage: string | Bytes) => Promise<string>
   ) => Promise<void>
   isLoading: boolean
-  isSuccess: boolean
+  result: { success: boolean; text?: string }
   isSubmit: boolean
 }
 
 export const WalletContext = createContext<ContextProps>(null!)
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [isSuccess, setIsSuccrss] = useState(false)
+  const [result, setResult] = useState<{ success: boolean; text?: string }>({
+    success: false,
+  })
   const [isSubmit, setIsSubmit] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -26,19 +28,24 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     addr: string,
     signerFunction: (signableMessage: string | Bytes) => Promise<string>
   ) => {
-    setIsLoading(true)
-    const res = await user.join(GUILD_ID, addr, signerFunction, [
-      {
-        name: "DISCORD",
-        authData: {
-          access_token: access_token,
+    try {
+      setIsLoading(true)
+      const res = await user.join(GUILD_ID, addr, signerFunction, [
+        {
+          name: "DISCORD",
+          authData: {
+            access_token: access_token,
+          },
         },
-      },
-    ])
-
-    setIsSuccrss(res.success)
-    setIsSubmit(true)
-    setIsLoading(false)
+      ])
+      setResult({ success: res.success })
+      setIsSubmit(true)
+      setIsLoading(false)
+    } catch (err) {
+      setResult({ success: false, text: (err as Error).message })
+      setIsSubmit(true)
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -46,7 +53,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       value={{
         onTokenSubmit,
         isLoading,
-        isSuccess,
+        result,
         isSubmit,
       }}
     >

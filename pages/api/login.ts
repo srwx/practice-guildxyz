@@ -8,13 +8,12 @@ export default async function handler(
   const { code } = req.query
   if (code) {
     try {
-      console.log("code:", code)
       const data = {
         client_id: "1029720283076112394",
         client_secret: "wwZq8AUkID0dgCm2i5693wmQcE1CjWLT",
         grant_type: "authorization_code",
         code,
-        redirect_uri: "https://practice-guildxyz.vercel.app/",
+        redirect_uri: process.env.DOMAIN_URL,
       }
 
       const response = await axios.post(
@@ -24,11 +23,9 @@ export default async function handler(
       )
 
       const json = await response.data
-      console.log("response", json)
 
       res.status(200).json({ access_token: json.access_token })
     } catch (err) {
-      console.log(err)
       res.status(400).json({ error: err })
     }
   }
